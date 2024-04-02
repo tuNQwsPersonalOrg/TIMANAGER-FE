@@ -1,0 +1,54 @@
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .root-page {
+        background-color: rgba(29, 29, 29, 0.9);
+        @apply flex h-screen w-screen flex-col gap-2.5 bg-cover bg-center bg-no-repeat bg-blend-darken;
+    }
+
+    /* .menu-container {
+        display: flex;
+        width: 3rem;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+    } */
+
+    .menu-item {
+        display: flex;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 5px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu-item[aria-current='page'] {
+        @apply bg-highlight;
+    }
+
+    a.highlight {
+        @apply bg-highlight;
+        border-radius: 5px;
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: 12rem 1fr;
+        transition: grid-template-columns 200ms linear;
+    }
+
+    .body.sidebar-hidden {
+        grid-template-columns: 3.375rem 1fr;
+    }
+}
+
+@layer utilities {
+    .bg-root {
+        background-image: url(../../assets/images/root-background.png);
+    }
+}

@@ -1,0 +1,34 @@
+@tailwind components;
+
+@layer components {
+    .button {
+        background: none;
+        outline: none;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75em 1em;
+        border-radius: 0.25em;
+        cursor: pointer;
+        transition: scale 100ms ease-in-out;
+    }
+
+    .button:active {
+        scale: 0.95;
+    }
+
+    .button.button.button:disabled {
+        cursor: default;
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .button.highlight {
+        @apply bg-highlight;
+    }
+
+    .button.highlight:hover {
+        box-shadow: 0 0 10px #3698cf;
+    }
+}

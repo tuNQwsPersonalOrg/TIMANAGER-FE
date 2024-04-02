@@ -1,0 +1,145 @@
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* Login page */
+    .login-page {
+        @apply bg-mask bg-cover bg-center bg-no-repeat bg-blend-darken;
+        @apply px-[0.45rem] pt-[0.45rem] isolate;
+    }
+
+    .login-page-logo-container {
+        @apply py-6 px-[1.125rem] flex items-center justify-between;
+    }
+
+    .login-page-isoft-logo {
+        @apply w-[11.025rem] object-cover object-center;
+    }
+
+    .login-page-ai-team-logo {
+        @apply w-[13.1625rem] object-cover object-center;
+    }
+
+    /* Login form */
+    .login-form {
+        @apply flex flex-col gap-y-[1.8rem];
+        @apply bg-black/50 ml-[2.3625rem] mt-6 w-[24.7125rem] rounded-md p-8;
+    }
+
+    .login-form-header {
+        @apply grid gap-y-[0.225rem];
+    }
+
+    .login-form-header-title {
+        @apply text-[1.8rem] font-bold uppercase text-[#1F679F];
+    }
+
+    .login-form-header-greeting {
+        @apply text-medium text-[#1F679F];
+    }
+
+    .login-form-container {
+        @apply grid gap-y-[0.9rem];
+    }
+
+    .login-form-group {
+        @apply flex flex-col gap-y-[0.225rem];
+    }
+
+    .login-form-group-label {
+        @apply text-white/50;
+    }
+
+    .login-form-group-input-container {
+        @apply flex items-center justify-center gap-x-[0.225rem];
+        @apply rounded shadow-2x2 bg-white/85 py-[0.5625rem] pr-[0.9rem] pl-[0.3375rem];
+    }
+
+    .login-form-group-input-container:has(input:-webkit-autofill) {
+        @apply bg-white;
+    }
+
+    .login-form-input {
+        background: none;
+        @apply flex-1 border-none text-black outline-none;
+    }
+
+    .login-form-input::placeholder {
+        @apply text-black/50;
+    }
+
+    .login-form-btn {
+        @apply flex items-center justify-center px-[0.9rem] py-[0.5625rem];
+        @apply rounded bg-highlight uppercase transition-transform;
+    }
+
+    .login-form-btn:active {
+        @apply scale-95;
+    }
+
+    .login-form-btn:disabled,
+    .login-form-btn.disabled {
+        pointer-events: none !important;
+        opacity: 0.75 !important;
+    }
+
+    .login-form-navigate-link-list {
+        @apply flex flex-col items-center gap-y-[0.225rem];
+    }
+
+    .login-form-navigate-link {
+        @apply text-[#1F679F] no-underline;
+    }
+
+    .login-form-navigate-link:hover {
+        @apply underline;
+    }
+
+    /* Animation group */
+    .login-animation-group {
+        @apply fixed -top-[1.35rem] right-[7.65rem] -z-[1];
+    }
+
+    .polygon-light {
+        background-image: linear-gradient(
+            180deg,
+            rgba(69, 148, 200, 0.2) 0%,
+            rgba(69, 148, 200, 0) 100%
+        );
+        clip-path: polygon(42% 0, 58% 0, 100% 100%, 0% 100%);
+        @apply opacity-10 w-[30rem] h-[31.5rem];
+        @apply animate-light-zoom;
+    }
+
+    .animation-app-logo {
+        @apply w-[25rem] h-[8.325rem] object-contain object-center;
+        @apply absolute left-[1.575rem] top-[14.625rem];
+        @apply animate-logo-blur;
+    }
+
+    .animation-ai-hand {
+        @apply w-[37.5rem] h-[13rem] fixed top-[23rem] right-16;
+        @apply bg-center bg-cover bg-[#040a44] bg-blend-lighten;
+        @apply bg-login-hand -z-[2];
+        @apply animate-hand-scale;
+    }
+
+    .login-loader {
+        @apply fixed bottom-4 h-2 w-[63rem] bg-[#d9d9d9]/50 left-1/2 -translate-x-2/4;
+    }
+
+    .login-loader::after {
+        content: '';
+        @apply block h-full animate-loading-bar bg-[#126096];
+    }
+}
+
+@layer utilities {
+    .bg-login {
+        background-image: url(../../assets/images/login-background.png);
+    }
+
+    .bg-login-hand {
+        background-image: url(../../assets/images/login-hand.png);
+    }
+}
