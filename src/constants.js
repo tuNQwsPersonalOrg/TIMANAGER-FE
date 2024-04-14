@@ -37,6 +37,7 @@ export const Menu = [
 ];
 
 export const timeListDisplay = [
+    '12 AM',
     '1 AM',
     '2 AM',
     '3 AM',
