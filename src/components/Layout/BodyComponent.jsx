@@ -28,7 +28,7 @@ const BodyComponent = () => {
 
     // if (pageNumber <= 0 || pageSizeNumber <= 0) return <LoaderComponent />;
     return (
-        <main className="hidden-container flex-1 bg-quater-black p-2.5 shadow-2x2 flex overflow-scroll">
+        <main className="hidden-container flex-1 bg-half-white p-2.5 shadow-2x2 flex overflow-scroll">
             <Outlet />
             {/* <PopupComponent /> */}
         </main>

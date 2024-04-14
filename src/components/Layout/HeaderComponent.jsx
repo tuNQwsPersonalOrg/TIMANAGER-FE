@@ -30,7 +30,7 @@ const HeaderComponent = () => {
     }, []);
 
     return (
-        <header className="flex items-center w-full justify-between p-2 bg-half-black">
+        <header className="flex items-center w-full justify-between p-2 bg-half-white">
             <div
                 className="mr-5 flex items-center gap-[0.625rem]"
                 ref={dropdownRef}

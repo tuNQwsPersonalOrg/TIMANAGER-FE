@@ -5,13 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalContextProvider from './contexts/Global/GlobalContext';
 import AuthContextProvider from './contexts/AuthContext/AuthContext';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <GlobalContextProvider>
             <AuthContextProvider>
-                <App />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <App />
+                </LocalizationProvider>
             </AuthContextProvider>
         </GlobalContextProvider>
     </React.StrictMode>
