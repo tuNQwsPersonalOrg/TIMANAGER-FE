@@ -42,6 +42,7 @@ const INIT_STATE = {
     dispatch: () => {},
     paths: [{ title: 'Home', path: '/home', level: 1 }],
     masterData: {},
+    selectedDate: new Date(),
 };
 
 export const GlobalContext = createContext(INIT_STATE);
@@ -67,6 +68,7 @@ const GlobalContextProvider = ({ children }) => {
                 fetchAPI,
                 paths: state.paths,
                 masterData: state.masterData,
+                selectedDate: state.selectedDate,
             }}
         >
             {children}
