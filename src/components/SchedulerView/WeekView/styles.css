@@ -1,0 +1,16 @@
+.scheduler-week-view {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    column-gap: 1rem;
+}
+
+.scheduler {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(24, 3rem);
+}
+
+.day-display-container {
+    display: grid;
+    grid-template-columns: 5.5rem repeat(7, 1fr);
+}

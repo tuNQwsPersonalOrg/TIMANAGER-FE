@@ -20,3 +20,14 @@ export function getDayName(dayNumber) {
             return 'Sunday';
     }
 }
+
+export function getWeekDays(date) {
+    const weekDays = [];
+    let day = dayjs(date).startOf('week');
+
+    for (let i = 0; i < 7; i++) {
+        weekDays.push(day.add(i, 'day').format('YYYY-MM-DD'));
+    }
+
+    return weekDays;
+}

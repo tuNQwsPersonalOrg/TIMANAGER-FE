@@ -9,7 +9,7 @@ const SchedulerDayViewComponent = () => {
     const { selectedDate } = useContext(GlobalContext);
 
     return (
-        <div className="flex flex-col gap-4 w-full h-full hidden-container">
+        <div className=" flex flex-col gap-8 w-full h-full hidden-container">
             <div className="flex flex-col px-6">
                 <span className="text-lg uppercase">
                     {/* {dayName} */}
@@ -20,16 +20,11 @@ const SchedulerDayViewComponent = () => {
                 </span>
             </div>
 
-            <div className="scroll-container flex flex-col">
+            <div className="scroll-container flex flex-col gap-12">
                 {timeListDisplay.map((time) => {
                     return (
-                        <div
-                            className="flex w-full gap-4 items-end"
-                            onClick={() => console.log(time)}
-                        >
-                            <div className="w-16 flex justify-end h-12 items-end">
-                                {time}
-                            </div>
+                        <div className="flex w-full gap-4 items-end">
+                            <div className="w-16 flex justify-end">{time}</div>
                             <div className="divider" />
                         </div>
                     );
