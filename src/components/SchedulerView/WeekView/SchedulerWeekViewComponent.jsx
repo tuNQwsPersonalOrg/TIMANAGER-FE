@@ -30,7 +30,7 @@ const SchedulerWeekViewComponent = () => {
             </div>
 
             <div className="scroll-container scheduler-week-view">
-                <div className="flex flex-col justify-between">
+                <div className="flex flex-col h-full justify-between relative">
                     {timeListDisplay.map((time) => {
                         return (
                             <div className="flex w-full gap-4 items-end">
@@ -41,22 +41,27 @@ const SchedulerWeekViewComponent = () => {
                         );
                     })}
                 </div>
-                <div className="scheduler">
-                    {timeListDisplay.map((time) => {
-                        return weekDays.map((day) => {
-                            return (
-                                <div
-                                    className="border-t border-r border-black"
-                                    onClick={() =>
-                                        console.log(
-                                            time,
-                                            dayjs(day).format('DD-MM-YYYY')
-                                        )
-                                    }
-                                ></div>
-                            );
-                        });
-                    })}
+                <div className="relative h-[72rem]">
+                    <div className="scheduler absolute w-full">
+                        {timeListDisplay.map((time) => {
+                            return weekDays.map((day) => {
+                                return (
+                                    <div
+                                        className="border border-zinc-300"
+                                        onClick={() =>
+                                            console.log(
+                                                time,
+                                                dayjs(day).format('DD-MM-YYYY')
+                                            )
+                                        }
+                                    ></div>
+                                );
+                            });
+                        })}
+                    </div>
+                    <div className="scheduler-overlay absolute w-full">
+                        <div className="bg-black row-span-3"></div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -14,3 +14,13 @@
     display: grid;
     grid-template-columns: 5.5rem repeat(7, 1fr);
 }
+
+.scheduler-wrap {
+    width: 72rem;
+}
+
+.scheduler-overlay {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(48, 1.5rem);
+}

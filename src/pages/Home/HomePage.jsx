@@ -7,9 +7,9 @@ import SchedulerMonthViewComponent from '../../components/SchedulerView/MonthVie
 const HomePage = () => {
     return (
         <div className="w-full h-full">
-            <SchedulerMonthViewComponent />
+            {/* <SchedulerMonthViewComponent /> */}
             {/* <SchedulerDayViewComponent /> */}
-            {/* <SchedulerWeekViewComponent /> */}
+            <SchedulerWeekViewComponent />
         </div>
     );
 };
