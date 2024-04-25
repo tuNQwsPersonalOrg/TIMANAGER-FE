@@ -1,0 +1,5 @@
+.month-view {
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+    grid-template-rows: 8% repeat(5, auto);
+}

@@ -4,6 +4,7 @@ export const GlobalActionType = {
     setPath: 'SET_PATH',
     setMasterData: 'SET_MASTER_DATA',
     setSelectedDate: 'SET_SELECTED_DATE',
+    setSelectedMonth: 'SET_SELECTED_MONTH',
 };
 export const GlobalLoadingStart = () => ({
     type: GlobalActionType.fetchStart,
@@ -38,4 +39,9 @@ export const GlobalSetMasterData = (masterData) => ({
 export const GlobalSetSelectedDate = (newSelectedDate) => ({
     type: GlobalActionType.setSelectedDate,
     payload: newSelectedDate,
+});
+
+export const GlobalSetSelectedMonth = (newSelectedMonth) => ({
+    type: GlobalActionType.setSelectedDate,
+    payload: newSelectedMonth,
 });

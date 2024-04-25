@@ -31,3 +31,16 @@ export function getWeekDays(date) {
 
     return weekDays;
 }
+
+export function getMonthDays(month, year) {
+    const monthDays = [];
+    let firstDayInMonth = dayjs(`${year}-${month}-01`);
+    let day = firstDayInMonth.subtract(firstDayInMonth.day(), 'day');
+
+    while (day.month() <= month - 1 || day.day() !== 0) {
+        monthDays.push(day.format('YYYY-MM-DD'));
+        day = day.add(1, 'day');
+    }
+
+    return monthDays;
+}

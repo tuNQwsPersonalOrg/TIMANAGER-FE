@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import GlobalReducer from './GlobalReducer';
 import { GlobalLoadingEnd, GlobalLoadingStart } from './GlobalAction';
+import dayjs from 'dayjs';
 
 /**
  * @typedef {{
@@ -43,6 +44,7 @@ const INIT_STATE = {
     paths: [{ title: 'Home', path: '/home', level: 1 }],
     masterData: {},
     selectedDate: new Date(),
+    selectedMonth: dayjs(new Date()).month() + 1,
 };
 
 export const GlobalContext = createContext(INIT_STATE);
@@ -69,6 +71,7 @@ const GlobalContextProvider = ({ children }) => {
                 paths: state.paths,
                 masterData: state.masterData,
                 selectedDate: state.selectedDate,
+                selectedMonth: state.selectedMonth,
             }}
         >
             {children}

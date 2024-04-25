@@ -27,6 +27,11 @@ export default function GlobalReducer(state, action) {
                 ...state,
                 selectedDate: action.payload,
             };
+        case GlobalActionType.setSelectedMonth:
+            return {
+                ...state,
+                selectedMonth: action.payload,
+            };
         default:
             return state;
     }
