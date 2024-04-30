@@ -1,0 +1,95 @@
+@tailwind components;
+
+@layer components {
+    .popup-component {
+        @apply fixed inset-0 z-50 bg-black/70 backdrop-blur-sm;
+        @apply flex items-center justify-center;
+    }
+    .popup-container {
+        @apply mx-4  overflow-hidden rounded bg-slate-800 sm:w-full lg:w-72;
+    }
+    .popup-header {
+        @apply flex items-center justify-between bg-highlight;
+        @apply px-4 py-2;
+    }
+    .popup-header-label {
+        @apply text-base font-bold;
+    }
+    .popup-header-close {
+        @apply cursor-pointer rounded hover:bg-slate-400;
+    }
+    .popup-header-close-icon {
+        @apply fill-white/60 hover:fill-white;
+    }
+    .popup-body {
+        @apply flex flex-col gap-4 p-4;
+    }
+    .popup-body-type {
+        @apply grid grid-cols-[max-content,1fr] items-center justify-center gap-4;
+    }
+    .popup-body-type-icon {
+        @apply h-10 w-10 fill-black;
+    }
+    .popup-body-type-icon.error {
+        @apply fill-red-400;
+    }
+    .popup-body-type-icon.warning {
+        @apply fill-yellow-400;
+    }
+    .popup-body-type-icon.info {
+        @apply fill-sky-400;
+    }
+    .popup-body-content {
+        @apply flex flex-1 flex-col gap-4;
+    }
+    .popup-message-wrapper {
+        @apply rounded bg-[#374151] p-4;
+    }
+    .popup-confirm-message {
+        @apply text-medium leading-tight;
+    }
+    .popup-message {
+        @apply text-small leading-tight text-[#FDBA8C];
+    }
+    .popup-footer {
+        @apply flex items-center justify-center gap-10 pb-4;
+    }
+    .popup-footer .popup-button {
+        @apply w-16 p-1.5;
+    }
+    .popup-footer .popup-button:focus {
+        @apply outline outline-[0.125rem] outline-offset-[0.125rem] outline-slate-300;
+    }
+    .popup-button .button-label {
+        @apply text-center;
+    }
+
+    /* Popup Form */
+    .popup-form-container {
+        @apply w-[80%] h-[80%] rounded-2xl bg-slate-600 flex flex-col justify-between;
+    }
+    .popup-form-container .popup-header {
+        @apply grid gap-4 bg-none rounded-tl-xl rounded-tr-xl;
+        @apply px-4 py-2;
+        grid-template-columns: auto 1.25rem;
+        grid-template-rows: auto auto;
+    }
+    .popup-form-container .popup-header-label {
+        @apply text-header font-normal;
+    }
+    .popup-body {
+        @apply w-full h-full flex flex-col gap-4 p-4;
+    }
+    .popup-body-content {
+        @apply flex flex-1 flex-col gap-4;
+    }
+    .popup-form-container .popup-footer {
+        @apply flex flex-col gap-4 p-4;
+    }
+    .popup-footer .popup-button:focus {
+        @apply outline outline-[0.125rem] outline-offset-[0.125rem] outline-slate-300;
+    }
+    .popup-button .button-label {
+        @apply text-center;
+    }
+}

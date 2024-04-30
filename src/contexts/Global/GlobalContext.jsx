@@ -45,6 +45,15 @@ const INIT_STATE = {
     masterData: {},
     selectedDate: new Date(),
     selectedMonth: dayjs(new Date()).month() + 1,
+    timespan: 'day',
+    createTaskForm: {
+        show: false,
+        header: '',
+        title: '',
+        target: '',
+        startTime: '',
+        title: '',
+    },
 };
 
 export const GlobalContext = createContext(INIT_STATE);
@@ -72,6 +81,8 @@ const GlobalContextProvider = ({ children }) => {
                 masterData: state.masterData,
                 selectedDate: state.selectedDate,
                 selectedMonth: state.selectedMonth,
+                timespan: state.timespan,
+                createTaskForm: state.createTaskForm,
             }}
         >
             {children}

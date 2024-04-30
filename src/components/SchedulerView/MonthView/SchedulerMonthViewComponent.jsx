@@ -6,7 +6,7 @@ import { GlobalContext } from '../../../contexts/Global/GlobalContext';
 import { getDayName, getMonthDays } from '../../../utils/DateTimeUtil';
 import { timeListDisplay } from '../../../constants';
 
-const SchedulerMonthViewComponent = () => {
+const SchedulerMonthViewComponent = ({ show = true }) => {
     const { selectedDate, selectedMonth, dispatch } = useContext(GlobalContext);
     const monthDays = getMonthDays(selectedMonth, dayjs().year());
     // console.log(
@@ -17,6 +17,7 @@ const SchedulerMonthViewComponent = () => {
     // );
     const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+    if (!show) return null;
     return (
         <div className="month-view w-full h-full hidden-container">
             {days.map((day) => {

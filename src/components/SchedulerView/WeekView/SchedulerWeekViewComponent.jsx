@@ -5,11 +5,12 @@ import { timeListDisplay } from '../../../constants';
 import { getDayName, getWeekDays } from '../../../utils/DateTimeUtil';
 import './styles.css';
 
-const SchedulerWeekViewComponent = () => {
+const SchedulerWeekViewComponent = ({ show = true }) => {
     const { selectedDate } = useContext(GlobalContext);
     const weekDays = getWeekDays(selectedDate);
     console.log(weekDays);
 
+    if (!show) return null;
     return (
         <div className="flex flex-col gap-8 w-full h-full hidden-container">
             <div className="day-display-container">
@@ -60,7 +61,12 @@ const SchedulerWeekViewComponent = () => {
                         })}
                     </div>
                     <div className="scheduler-overlay absolute w-full">
-                        <div className="bg-black row-span-3"></div>
+                        <div className="bg-black col-start-1 row-start-10 row-span-3 text-white flex items-start justify-center p-2">
+                            Test
+                        </div>
+                        <div className="bg-black col-start-2 row-start-12 row-span-4 text-white flex items-start justify-center p-2">
+                            Test 2
+                        </div>
                     </div>
                 </div>
             </div>

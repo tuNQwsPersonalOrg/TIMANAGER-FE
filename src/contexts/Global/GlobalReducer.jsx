@@ -32,6 +32,16 @@ export default function GlobalReducer(state, action) {
                 ...state,
                 selectedMonth: action.payload,
             };
+        case GlobalActionType.setTimespan:
+            return {
+                ...state,
+                timespan: action.payload,
+            };
+        case GlobalActionType.setCreateTaskForm:
+            return {
+                ...state,
+                createTaskForm: action.payload,
+            };
         default:
             return state;
     }

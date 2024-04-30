@@ -7,6 +7,7 @@ import { GlobalContext } from '../../contexts/Global/GlobalContext';
 import {
     GlobalActionType,
     GlobalSetSelectedDate,
+    GlobalSetTimespan,
 } from '../../contexts/Global/GlobalAction';
 
 const SideBarComponent = () => {
@@ -24,24 +25,28 @@ const SideBarComponent = () => {
                 <SelectSingleComponent
                     options={[
                         {
-                            id: 1,
+                            id: 'day',
                             name: 'Day',
                         },
                         {
-                            id: 2,
+                            id: 'week',
                             name: 'Week',
                         },
                         {
-                            id: 3,
+                            id: 'month',
                             name: 'Month',
                         },
                         {
-                            id: 4,
+                            id: 'year',
                             name: 'Year',
                         },
                     ]}
                     renderKey="name"
                     defaultValue="Day"
+                    onSelect={(item) => {
+                        dispatch(GlobalSetTimespan(item.id));
+                        // console.log(item);
+                    }}
                 />
             </div>
 

@@ -5,6 +5,8 @@ export const GlobalActionType = {
     setMasterData: 'SET_MASTER_DATA',
     setSelectedDate: 'SET_SELECTED_DATE',
     setSelectedMonth: 'SET_SELECTED_MONTH',
+    setTimespan: 'SET_TIMESPAN',
+    setCreateTaskForm: 'SET_CREATE_TASK_FORM',
 };
 export const GlobalLoadingStart = () => ({
     type: GlobalActionType.fetchStart,
@@ -44,4 +46,14 @@ export const GlobalSetSelectedDate = (newSelectedDate) => ({
 export const GlobalSetSelectedMonth = (newSelectedMonth) => ({
     type: GlobalActionType.setSelectedDate,
     payload: newSelectedMonth,
+});
+
+export const GlobalSetTimespan = (timespan) => ({
+    type: GlobalActionType.setTimespan,
+    payload: timespan,
+});
+
+export const GlobalSetCreateTaskForm = (taskInfo) => ({
+    type: GlobalActionType.setCreateTaskForm,
+    payload: taskInfo,
 });
