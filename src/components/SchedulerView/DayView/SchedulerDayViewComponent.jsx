@@ -37,6 +37,8 @@ const SchedulerDayViewComponent = ({ show = true }) => {
                                         GlobalSetCreateTaskForm({
                                             show: true,
                                             header: 'Add Task',
+                                            startTime:
+                                                timeListDisplay[index - 1],
                                         })
                                     );
                                 }

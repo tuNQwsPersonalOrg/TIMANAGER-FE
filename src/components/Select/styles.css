@@ -9,7 +9,7 @@
 
     .select-single-toggle,
     .select-multiple-toggle {
-        @apply flex items-center justify-between gap-2.5 rounded-md bg-[#767680]/50 px-2 py-1;
+        @apply flex items-center justify-between gap-2.5 rounded-md bg-[#767680]/50 px-2 py-2;
         @apply select-none;
     }
 

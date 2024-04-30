@@ -8,10 +8,12 @@ import {
     GlobalSetCreateTaskForm,
     GlobalSetPopup,
 } from '../../contexts/Global/GlobalAction';
-import { popupTarget } from '../../constants';
+import { popupTarget, timeList, timeListDisplay } from '../../constants';
 // import TextboxComponent from '../Textbox/TextboxComponent';
 // import ButtonComponent from '../Button/ButtonComponent';
 import { useNavigate } from 'react-router-dom';
+import TextboxComponent from '../Textbox/TextboxComponent';
+import SelectSingleComponent from '../Select/SelectSingleComponent';
 
 const PopupFormComponent = () => {
     const { createTaskForm, dispatch, fetchAPI } = useContext(GlobalContext);
@@ -81,43 +83,82 @@ const PopupFormComponent = () => {
                 // onSubmit={handleCreatePodcast}
             >
                 <div className="popup-header">
-                    <h3 className="popup-header-label">
+                    <span className="text-xl font-bold">
                         {createTaskForm.header}
-                    </h3>
+                    </span>
                     <div className="popup-header-close" onClick={handleCancel}>
                         <IconClose className="popup-header-close-icon h-5 w-5" />
                     </div>
-                    <div className="divider col-span-2" />
                 </div>
 
-                <div className="popup-body">
-                    {/* <div className="flex items-center justify-between gap-4 max-w-[27rem] w-full">
-                        <span className="required-field">Podcast Title</span>
+                <div className="popup-body pr-24 gap-14">
+                    <div className="flex items-center justify-between gap-8 w-full">
+                        <span className="">Title</span>
                         <TextboxComponent
+                            className="w-[85%]"
                             // key={new Date()}
                             value={title}
-                            required
+                            // required
                             onChange={setTitle}
+                            placeholder="Title..."
                         />
                     </div>
-                    <div className="flex items-center justify-between gap-4 max-w-[27rem] w-full">
-                        <span className="required-field">
-                            Podcast Audio URL
-                        </span>
-                        <TextboxComponent
-                            // key={new Date()}
-                            value={audioUrl}
-                            required
-                            onChange={setAudioUrl}
+                    <div className="flex items-center justify-between gap-8 w-full">
+                        <span className="">Target</span>
+                        <SelectSingleComponent
+                            // key={clearTime}
+                            className="w-[85%]"
+                            options={[
+                                {
+                                    name: 'target 1',
+                                    id: 1,
+                                },
+                                {
+                                    name: 'target 2',
+                                    id: 2,
+                                },
+                            ]}
+                            renderKey="name"
+                            valueKey="id"
+                            placeholder="Target"
+                            // onSelect={handleSelectFilter(field[valueKey])}
+                            nullable
                         />
-                    </div> */}
+                    </div>
+                    <div className="grid grid-cols-3 gap-10">
+                        <SelectSingleComponent
+                            // key={clearTime}
+                            className="w-full"
+                            options={timeList}
+                            renderKey="display"
+                            valueKey="id"
+                            placeholder="Start Time"
+                            defaultValue={createTaskForm.startTime}
+                            // onSelect={handleSelectFilter(field[valueKey])}
+                            nullable
+                        />
+                        <SelectSingleComponent
+                            // key={clearTime}
+                            className="w-full"
+                            options={timeList}
+                            renderKey="display"
+                            valueKey="id"
+                            placeholder="End Time"
+                            // onSelect={handleSelectFilter(field[valueKey])}
+                            nullable
+                        />
+                    </div>
                 </div>
 
                 <div className="popup-footer">
-                    <div className="divider"></div>
-                    <div className="flex w-full justify-end">
+                    <div className="flex w-full justify-end px-4 py-2">
                         {/* <ButtonComponent type="submit" label={'Save'} /> */}
-                        <button type="submit">Save</button>
+                        <button
+                            type="submit"
+                            className="flex justify-center items-center bg-[#3A6DEE] px-8 py-[0.75rem] rounded-md"
+                        >
+                            <span className="text-white">Save</span>
+                        </button>
                     </div>
                 </div>
             </form>

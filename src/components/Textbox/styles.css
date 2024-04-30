@@ -1,0 +1,25 @@
+@tailwind components;
+
+@layer components {
+    .textbox {
+        @apply rounded-md border-none bg-[#767680]/50 px-2 py-1.5 shadow-2x2 outline-none;
+        @apply placeholder:text-white/75;
+    }
+
+    .textbox:disabled,
+    .textbox.disabled {
+        @apply bg-[#767680]/25 leading-relaxed;
+    }
+
+    .textbox::placeholder {
+        @apply text-white/75;
+    }
+    .textbox:user-invalid {
+        @apply rounded outline outline-[0.1rem] -outline-offset-[0.1rem] outline-[#ef4444];
+        box-shadow: 0 0 0.625rem #ef4444;
+    }
+
+    .textbox:not(:disabled) {
+        @apply leading-normal;
+    }
+}
