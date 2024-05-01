@@ -52,7 +52,7 @@ const INIT_STATE = {
         title: '',
         target: '',
         startTime: '',
-        title: '',
+        date: dayjs(new Date()).format('DD/MM/YYYY'),
     },
 };
 

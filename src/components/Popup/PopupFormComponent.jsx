@@ -26,6 +26,8 @@ const PopupFormComponent = () => {
         // popup.onCancel?.();
     };
 
+    const onSave = () => {};
+
     // const handleCreatePodcast = async (e) => {
     //     e.preventDefault();
     //     try {
@@ -73,7 +75,6 @@ const PopupFormComponent = () => {
     //     }
     // };
 
-    console.log(title);
     // if (!popup.show || popup.target !== popupTarget.createPodcastForm)
     //     return null;
     return ReactDOM.createPortal(
@@ -91,7 +92,7 @@ const PopupFormComponent = () => {
                     </div>
                 </div>
 
-                <div className="popup-body pr-24 gap-14">
+                <div className="popup-body pr-24 gap-6">
                     <div className="flex items-center justify-between gap-8 w-full">
                         <span className="">Title</span>
                         <TextboxComponent
@@ -101,6 +102,18 @@ const PopupFormComponent = () => {
                             // required
                             onChange={setTitle}
                             placeholder="Title..."
+                        />
+                    </div>
+                    <div className="flex items-center justify-between gap-8 w-full">
+                        <span className="">Date</span>
+                        <TextboxComponent
+                            className="w-[85%]"
+                            // key={new Date()}
+                            value={createTaskForm.date}
+                            disabled
+                            // required
+                            // onChange={setTitle}
+                            // placeholder="Title..."
                         />
                     </div>
                     <div className="flex items-center justify-between gap-8 w-full">
@@ -156,6 +169,7 @@ const PopupFormComponent = () => {
                         <button
                             type="submit"
                             className="flex justify-center items-center bg-[#3A6DEE] px-8 py-[0.75rem] rounded-md"
+                            onSubmit={onSave}
                         >
                             <span className="text-white">Save</span>
                         </button>

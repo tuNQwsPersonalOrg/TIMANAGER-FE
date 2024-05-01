@@ -162,3 +162,28 @@ export const timeList = [
         display: '11 PM',
     },
 ];
+
+const initTimeListDetail = () => {
+    const amSuffixes = [':00 AM', ':30 AM'];
+    const pmSuffixes = [':00 PM', ':30 PM'];
+    const timeListDetail = [];
+    amSuffixes.forEach((suffix) => {
+        timeListDetail.push(12 + suffix);
+    });
+    for (var i = 1; i < 12; i++) {
+        timeListDetail.push(i + amSuffixes[0]);
+        timeListDetail.push(i + amSuffixes[1]);
+    }
+    pmSuffixes.forEach((suffix) => {
+        timeListDetail.push(12 + suffix);
+    });
+    for (var i = 1; i < 12; i++) {
+        timeListDetail.push(i + pmSuffixes[0]);
+        timeListDetail.push(i + pmSuffixes[1]);
+    }
+    return timeListDetail;
+};
+
+export const timeListDetail = initTimeListDetail();
+
+export const shortDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
