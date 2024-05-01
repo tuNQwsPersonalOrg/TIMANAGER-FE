@@ -10,6 +10,12 @@
     grid-template-rows: repeat(24, 3rem);
 }
 
+.week-task-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(48, 1.5rem);
+}
+
 .day-display-container {
     display: grid;
     grid-template-columns: 5.5rem repeat(7, 1fr);

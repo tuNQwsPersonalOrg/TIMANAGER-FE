@@ -4,7 +4,7 @@ import { DateCalendar, DayCalendarSkeleton } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { GlobalContext } from '../../../contexts/Global/GlobalContext';
 import { getDayName, getMonthDays } from '../../../utils/DateTimeUtil';
-import { timeListDisplay } from '../../../constants';
+import { shortDays, timeListDisplay } from '../../../constants';
 
 const SchedulerMonthViewComponent = ({ show = true }) => {
     const { selectedDate, selectedMonth, dispatch } = useContext(GlobalContext);
@@ -15,12 +15,11 @@ const SchedulerMonthViewComponent = ({ show = true }) => {
     //         dayjs('2024-04-26').year()
     //     )
     // );
-    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
     if (!show) return null;
     return (
         <div className="month-view w-full h-full hidden-container">
-            {days.map((day) => {
+            {shortDays.map((day) => {
                 return (
                     <span className="text-lg uppercase text-center">
                         {/* {dayName} */}
