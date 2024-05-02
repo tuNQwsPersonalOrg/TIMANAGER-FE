@@ -50,6 +50,7 @@ const SchedulerDayViewComponent = ({ show = true }) => {
                         </div>
                     );
                 })}
+
                 <div className="day-task-grid absolute grid w-[95%] h-[75rem] pl-[4.75rem] pt-12">
                     {timeListDetail.map((time, index) => {
                         return (

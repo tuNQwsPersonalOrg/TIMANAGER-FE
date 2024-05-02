@@ -8,17 +8,16 @@ const TaskComponent = ({
     suffix,
     onClick,
 }) => {
-    console.log(style);
     return (
-        <div
+        <span
             key={key}
             style={style}
-            className={`${className} bg-[#039BE5] w-full p-2 text-white rounded-md overflow-auto`}
+            className={`bg-[#039BE5] w-full p-2 text-white rounded-md overflow-auto ${className}`}
             onClick={onClick}
         >
             {text}
             <span className="text-sm ml-8">{suffix}</span>
-        </div>
+        </span>
     );
 };
 
