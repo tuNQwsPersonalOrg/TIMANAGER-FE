@@ -31,7 +31,7 @@ const DayTaskComponent = ({ text, startTime, endTime, key }) => {
             }}
             text={text}
             suffix={startTime + ' - ' + endTime}
-            className={`col-start-1 z-10 absolute`}
+            className={`col-start-1 z-10 absolute w-full overflow-auto`}
             onClick={onClick}
         />
     );

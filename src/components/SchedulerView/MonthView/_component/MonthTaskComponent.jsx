@@ -7,8 +7,6 @@ import TaskComponent from '../../Task/TaskComponent';
 const MonthTaskComponent = ({ text, key, day }) => {
     const { dispatch } = useContext(GlobalContext);
 
-    const dayIndex = shortDays.findIndex((shortDay) => shortDay === day) + 1;
-
     const onClick = () => {
         dispatch(
             GlobalSetCreateTaskForm({
@@ -28,7 +26,7 @@ const MonthTaskComponent = ({ text, key, day }) => {
                 }
             }
             text={text}
-            className={`p-1 text-sm text-center`}
+            className={`p-1 text-sm w-full`}
             onClick={onClick}
         />
     );

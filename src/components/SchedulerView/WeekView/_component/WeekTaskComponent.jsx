@@ -33,7 +33,7 @@ const WeekTaskComponent = ({ text, startTime, endTime, key, day }) => {
             }}
             text={text}
             suffix={startTime + ' - ' + endTime}
-            className={`w-44 z-20 absolute`}
+            className={`w-44 z-20 absolute overflow-auto`}
             onClick={onClick}
         />
     );

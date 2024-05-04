@@ -21,7 +21,7 @@ const SchedulerMonthViewComponent = ({ show = true }) => {
         },
         {
             title: 'Off to work',
-            date: '25/05/2024',
+            date: '2024-05-25',
             target: {
                 id: 1,
                 name: 'target 1',
@@ -52,17 +52,20 @@ const SchedulerMonthViewComponent = ({ show = true }) => {
                 );
 
                 return (
-                    <div className="flex flex-col px-6 items-center justify-start border border-zinc-300 pt-2">
+                    <div className="flex flex-col px-4 gap-2 items-center justify-start border border-zinc-300 pt-2 hidden-container">
                         <span className="text-lg">{dayjs(date).date()}</span>
-                        {/* {task ? (
-                            <MonthTaskComponent text={'Off to work'} />
-                        ) : null} */}
+                        <div className="scroll-container flex flex-col gap-2 w-full">
+                            {task ? (
+                                <MonthTaskComponent text={task.title} />
+                            ) : null}
+                        </div>
                         {/* <span className="bg-red-400 w-full text-center text-white rounded-lg p-1 text-sm">
                             Nghỉ
                         </span> */}
                     </div>
                 );
             })}
+            {/* <MonthTaskComponent /> */}
         </div>
     );
 };

@@ -9,15 +9,15 @@ const TaskComponent = ({
     onClick,
 }) => {
     return (
-        <span
+        <div
             key={key}
             style={style}
-            className={`bg-[#039BE5] w-full p-2 text-white rounded-md overflow-auto ${className}`}
+            className={`${className} bg-[#039BE5] p-2 text-white rounded-md`}
             onClick={onClick}
         >
             {text}
-            <span className="text-sm ml-8">{suffix}</span>
-        </span>
+            <span className="text-xs ml-8">{suffix}</span>
+        </div>
     );
 };
 
