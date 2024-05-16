@@ -1,95 +1,106 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './styles.css';
 import ReactDOM from 'react-dom';
-import { IconClose, IconDangerous, IconInfo, IconWarning } from '../../icons';
-import groupClass from '../../utils/ClassNameUtil';
+import { IconClose, IconTrashBin } from '../../icons';
 import { GlobalContext } from '../../contexts/Global/GlobalContext';
-import {
-    GlobalSetCreateTaskForm,
-    GlobalSetPopup,
-} from '../../contexts/Global/GlobalAction';
-import { popupTarget, timeList, timeListDisplay } from '../../constants';
+import { GlobalSetCreateTaskForm } from '../../contexts/Global/GlobalAction';
+import { timeListDetail, timeListOption } from '../../constants';
 // import TextboxComponent from '../Textbox/TextboxComponent';
 // import ButtonComponent from '../Button/ButtonComponent';
 import { useNavigate } from 'react-router-dom';
 import TextboxComponent from '../Textbox/TextboxComponent';
 import SelectSingleComponent from '../Select/SelectSingleComponent';
+import TaskService from '../../services/task.service';
+import { formatDate, formatTime } from '../../utils/DateTimeUtil';
+import TargetService from '../../services/target.service';
 
 const PopupFormComponent = () => {
-    const { createTaskForm, dispatch, fetchAPI } = useContext(GlobalContext);
+    const { selectedDate, createTaskForm, dispatch } =
+        useContext(GlobalContext);
     const [title, setTitle] = useState('');
-    const [audioUrl, setAudioUrl] = useState('');
+    const [startTime, setStartTime] = useState(
+        formatTime(createTaskForm.startTime)
+    );
+    const [endTime, setEndTime] = useState(formatTime(createTaskForm.endTime));
+    const [targetId, setTargetId] = useState(null);
     const navigate = useNavigate();
+    const [targetList, setTargetList] = useState([]);
 
     const handleCancel = () => {
         dispatch(GlobalSetCreateTaskForm({ show: false }));
         // popup.onCancel?.();
     };
 
-    const onSave = () => {};
+    const handleDelete = async () => {
+        const result = await TaskService.deleteTask(createTaskForm.taskId);
+        console.log(result);
+        if (result) {
+            alert('Delete task successfully');
+        }
+        handleCancel();
+    };
 
-    // const handleCreatePodcast = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const result = await fetchAPI(() =>
-    //             PodcastService.createPodcast({
-    //                 name: title,
-    //                 podcast: audioUrl,
-    //                 user: '6612148ab130b8ad6c70e2a3',
-    //             })
-    //         );
-    //         console.log(result);
-    //         if (result) {
-    //             dispatch(
-    //                 GlobalSetPopup({
-    //                     type: 'info',
-    //                     header: 'Create Podcast',
-    //                     confirmMessage: 'Successfully create new podcast!',
-    //                     show: true,
-    //                     target: popupTarget.common,
-    //                     onConfirm: () =>
-    //                         navigate('/my-channel', {
-    //                             state: {
-    //                                 createdAt: Date.now(),
-    //                             },
-    //                         }),
-    //                 })
-    //             );
-    //             popup.onConfirm?.();
-    //         } else {
-    //             dispatch(
-    //                 GlobalSetPopup({
-    //                     type: 'error',
-    //                     header: 'Create Podcast',
-    //                     confirmMessage:
-    //                         'Something went wrong, please try again!',
-    //                     target: popupTarget.common,
-    //                     message:
-    //                         'Maybe your data is in incorrect value format.',
-    //                     show: true,
-    //                 })
-    //             );
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
+        if (createTaskForm.formType === 'add') {
+            const result = await TaskService.createTask({
+                title: title,
+                date: formatDate(selectedDate),
+                start_time: startTime,
+                end_time: endTime,
+                notes: null,
+                target_id: targetId,
+            });
+            console.log(result);
+            if (result) {
+                alert('Create task successfully');
+            }
+        } else if (createTaskForm.formType === 'update') {
+            // const result = await TaskService.deleteTask(createTaskForm.taskId);
+            // console.log(result);
+            // if (result) {
+            //     alert('Create task successfully');
+            // }
+        }
+        // createTaskForm.onSave();
+        handleCancel();
+    };
+
+    useEffect(() => {
+        const getAllTargets = async () => {
+            const result = await TargetService.getAllTargets();
+            if (result) {
+                setTargetList(result.targets);
+            }
+        };
+        getAllTargets();
+    }, []);
 
     // if (!popup.show || popup.target !== popupTarget.createPodcastForm)
     //     return null;
     return ReactDOM.createPortal(
         <div className="popup-component">
-            <form
-                className="popup-form-container"
-                // onSubmit={handleCreatePodcast}
-            >
+            <form className="popup-form-container" onSubmit={onSubmit}>
                 <div className="popup-header">
                     <span className="text-xl font-bold">
                         {createTaskForm.header}
                     </span>
+
                     <div className="popup-header-close" onClick={handleCancel}>
                         <IconClose className="popup-header-close-icon h-5 w-5" />
                     </div>
+                    {createTaskForm.formType === 'update' ? (
+                        <div
+                            className="relative w-5 top-0 left-0"
+                            onClick={handleDelete}
+                        >
+                            <IconTrashBin
+                                fill="red"
+                                className="cursor-pointer h-5 w-5"
+                            />
+                        </div>
+                    ) : null}
                 </div>
 
                 <div className="popup-body pr-24 gap-6">
@@ -121,20 +132,13 @@ const PopupFormComponent = () => {
                         <SelectSingleComponent
                             // key={clearTime}
                             className="w-[85%]"
-                            options={[
-                                {
-                                    name: 'target 1',
-                                    id: 1,
-                                },
-                                {
-                                    name: 'target 2',
-                                    id: 2,
-                                },
-                            ]}
-                            renderKey="name"
+                            options={targetList ?? []}
+                            renderKey="title"
                             valueKey="id"
                             placeholder="Target"
-                            // onSelect={handleSelectFilter(field[valueKey])}
+                            onSelect={(option) => {
+                                setTargetId(option.id);
+                            }}
                             nullable
                         />
                     </div>
@@ -142,22 +146,26 @@ const PopupFormComponent = () => {
                         <SelectSingleComponent
                             // key={clearTime}
                             className="w-full"
-                            options={timeList}
+                            options={timeListOption}
                             renderKey="display"
                             valueKey="id"
                             placeholder="Start Time"
                             defaultValue={createTaskForm.startTime}
-                            // onSelect={handleSelectFilter(field[valueKey])}
+                            onSelect={(option) =>
+                                setStartTime(formatTime(option.display))
+                            }
                             nullable
                         />
                         <SelectSingleComponent
                             // key={clearTime}
                             className="w-full"
-                            options={timeList}
+                            options={timeListOption}
                             renderKey="display"
                             valueKey="id"
                             placeholder="End Time"
-                            // onSelect={handleSelectFilter(field[valueKey])}
+                            onSelect={(option) =>
+                                setEndTime(formatTime(option.display))
+                            }
                             nullable
                         />
                     </div>
@@ -169,7 +177,6 @@ const PopupFormComponent = () => {
                         <button
                             type="submit"
                             className="flex justify-center items-center bg-[#3A6DEE] px-8 py-[0.75rem] rounded-md"
-                            onSubmit={onSave}
                         >
                             <span className="text-white">Save</span>
                         </button>

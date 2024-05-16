@@ -1,26 +1,14 @@
 import { IconHome } from './icons';
 
-const DEV_ENDPOINT = 'https://api-prpo-dev.i-soft.com.vn/api/v1';
-const PRO_ENDPOINT = 'https://api-prpo-dev.i-soft.com.vn/api/v1';
+const DEV_ENDPOINT = 'http://localhost:8000';
+const PRO_ENDPOINT = 'http://localhost:8000';
 
 export const PRPO_SERVICE_URL =
     process.env.NODE_ENV === 'production' ? PRO_ENDPOINT : DEV_ENDPOINT;
 
 export const ResponseStatus = {
-    success: 'Success',
-    error: 'Error',
-};
-
-export const StatusMapping = {
-    NOT_STARTED: 'warning',
-    IN_PROGRESS: 'info',
-    PENDING: 'info',
-    DONE: 'success',
-    CANCELLED: 'error',
-    PAST_DUE: 'error',
-    ON_TIME: 'info',
-    EARLY: 'success',
-    DISABLED: 'disabled',
+    success: 200,
+    error: 400,
 };
 
 export const PathList = {
@@ -184,6 +172,20 @@ const initTimeListDetail = () => {
     return timeListDetail;
 };
 
+const initTimeListOption = () => {
+    const timeListDetail = initTimeListDetail();
+    const timeListOption = [];
+    timeListDetail.forEach((element, index) => {
+        timeListOption.push({
+            id: index,
+            display: element,
+        });
+    });
+    return timeListOption;
+};
+
 export const timeListDetail = initTimeListDetail();
+
+export const timeListOption = initTimeListOption();
 
 export const shortDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];

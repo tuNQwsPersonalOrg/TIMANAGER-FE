@@ -5,3 +5,4 @@ export { ReactComponent as IconVisibility } from './icon-visibility.svg';
 export { ReactComponent as IconVisibilityOff } from './icon-visibility-off.svg';
 export { ReactComponent as IconExpandMore } from './icon-expand-more.svg';
 export { ReactComponent as IconClose } from './icon-close.svg';
+export { ReactComponent as IconTrashBin } from './icon-trash-bin.svg';

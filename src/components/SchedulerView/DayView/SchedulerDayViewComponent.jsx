@@ -2,26 +2,44 @@ import React, { useContext, useEffect, useState } from 'react';
 import './styles.css';
 import { timeListDetail, timeListDisplay } from '../../../constants';
 import dayjs from 'dayjs';
-import { getDayName } from '../../../utils/DateTimeUtil';
+import { formatDate, getDayName } from '../../../utils/DateTimeUtil';
 import { GlobalContext } from '../../../contexts/Global/GlobalContext';
 import { GlobalSetCreateTaskForm } from '../../../contexts/Global/GlobalAction';
 import { taskList } from '../../../data/tasks';
 import DayTaskComponent from './_component/DayTaskComponent';
+import TaskService from '../../../services/task.service';
 
 const SchedulerDayViewComponent = ({ show = true }) => {
-    const { selectedDate, dispatch } = useContext(GlobalContext);
-    const tasks = taskList;
+    const { selectedDate, createTaskForm, dispatch } =
+        useContext(GlobalContext);
+    const [tasks, setTasks] = useState([]);
 
     const handleCreateTask = (time) => {
         dispatch(
             GlobalSetCreateTaskForm({
                 show: true,
                 header: 'Add Task',
-                date: dayjs(new Date()).format('DD/MM/YYYY'),
+                date: dayjs(selectedDate).format('DD/MM/YYYY'),
                 startTime: time,
+                formType: 'add',
             })
         );
     };
+
+    useEffect(() => {
+        if (!createTaskForm.show) {
+            const getTaskList = async () => {
+                const result = await TaskService.getTaskList({
+                    start: formatDate(selectedDate) + ' 00:00:00',
+                    end: formatDate(selectedDate) + ' 23:59:00',
+                });
+                if (result) {
+                    setTasks(result.tasks);
+                }
+            };
+            getTaskList();
+        }
+    }, [createTaskForm.show, selectedDate]);
 
     if (!show) return null;
     return (
@@ -63,21 +81,18 @@ const SchedulerDayViewComponent = ({ show = true }) => {
                             />
                         );
                     })}
-
-                    {/* <div
-                        className={`bg-black w-full h-[${1.5}rem] col-start-1 row-start-5 text-white flex items-start justify-center p-2 z-10 absolute`}
-                        onClick={() => {
-                            dispatch(
-                                GlobalSetCreateTaskForm({
-                                    show: true,
-                                    header: 'Update Task',
-                                })
-                            );
-                        }}
-                    >
-                        Test
-                    </div> */}
-                    <DayTaskComponent
+                    {tasks.map((task) => {
+                        return (
+                            <DayTaskComponent
+                                key={task.id}
+                                taskId={task.id}
+                                text={task.title}
+                                startTime={task.start_time}
+                                endTime={task.end_time}
+                            />
+                        );
+                    })}
+                    {/* <DayTaskComponent
                         key={1}
                         text={'Test'}
                         startTime={'12:00 AM'}
@@ -94,7 +109,7 @@ const SchedulerDayViewComponent = ({ show = true }) => {
                         text={'Sleep'}
                         startTime={'12:00 PM'}
                         endTime={'1:30 PM'}
-                    />
+                    /> */}
                 </div>
             </div>
         </div>

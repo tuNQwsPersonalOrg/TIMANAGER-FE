@@ -48,11 +48,14 @@ const INIT_STATE = {
     timespan: 'day',
     createTaskForm: {
         show: false,
+        taskId: null,
         header: '',
         title: '',
         target: '',
-        startTime: '',
+        startTime: null,
+        endTime: null,
         date: dayjs(new Date()).format('DD/MM/YYYY'),
+        formType: 'add',
     },
 };
 
