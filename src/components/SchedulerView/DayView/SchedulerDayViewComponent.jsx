@@ -19,7 +19,7 @@ const SchedulerDayViewComponent = ({ show = true }) => {
             GlobalSetCreateTaskForm({
                 show: true,
                 header: 'Add Task',
-                date: dayjs(selectedDate).format('DD/MM/YYYY'),
+                date: selectedDate,
                 startTime: time,
                 formType: 'add',
             })

@@ -13,6 +13,7 @@ import SelectSingleComponent from '../Select/SelectSingleComponent';
 import TaskService from '../../services/task.service';
 import { formatDate, formatTime } from '../../utils/DateTimeUtil';
 import TargetService from '../../services/target.service';
+import dayjs from 'dayjs';
 
 const PopupFormComponent = () => {
     const { selectedDate, createTaskForm, dispatch } =
@@ -43,10 +44,10 @@ const PopupFormComponent = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        if (createTaskForm.formType === 'add') {
+        if (createTaskForm.formType === 'add' || !createTaskForm.formType) {
             const result = await TaskService.createTask({
                 title: title,
-                date: formatDate(selectedDate),
+                date: formatDate(createTaskForm.date),
                 start_time: startTime,
                 end_time: endTime,
                 notes: null,
@@ -120,7 +121,9 @@ const PopupFormComponent = () => {
                         <TextboxComponent
                             className="w-[85%]"
                             // key={new Date()}
-                            value={createTaskForm.date}
+                            value={dayjs(createTaskForm.date).format(
+                                'DD/MM/YYYY'
+                            )}
                             disabled
                             // required
                             // onChange={setTitle}

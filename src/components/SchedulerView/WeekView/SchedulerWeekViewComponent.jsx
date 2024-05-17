@@ -1,16 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../../../contexts/Global/GlobalContext';
 import dayjs from 'dayjs';
 import { timeListDetail, timeListDisplay } from '../../../constants';
-import { getDayName, getWeekDays } from '../../../utils/DateTimeUtil';
+import {
+    formatDate,
+    getDayName,
+    getWeekDays,
+} from '../../../utils/DateTimeUtil';
 import './styles.css';
 import { GlobalSetCreateTaskForm } from '../../../contexts/Global/GlobalAction';
 import WeekTaskComponent from './_component/WeekTaskComponent';
+import TaskService from '../../../services/task.service';
 
 const SchedulerWeekViewComponent = ({ show = true }) => {
-    const { selectedDate, dispatch } = useContext(GlobalContext);
+    const { selectedDate, dispatch, createTaskForm } =
+        useContext(GlobalContext);
     const weekDays = getWeekDays(selectedDate);
-    console.log(weekDays);
+    const [tasks, setTasks] = useState([]);
 
     const handleCreateTask = (time, date) => {
         dispatch(
@@ -22,6 +28,22 @@ const SchedulerWeekViewComponent = ({ show = true }) => {
             })
         );
     };
+
+    useEffect(() => {
+        if (!createTaskForm.show) {
+            const getTaskList = async () => {
+                const result = await TaskService.getTaskList({
+                    start: formatDate(weekDays[0]) + ' 00:00:00',
+                    end:
+                        formatDate(weekDays[weekDays.length - 1]) + ' 23:59:00',
+                });
+                if (result) {
+                    setTasks(result.tasks);
+                }
+            };
+            getTaskList();
+        }
+    }, [createTaskForm.show, selectedDate]);
 
     if (!show) return null;
     return (
@@ -78,37 +100,31 @@ const SchedulerWeekViewComponent = ({ show = true }) => {
                                         key={time + day}
                                         className={`flex items-start justify-center p-2 opacity-0`}
                                         onClick={() => {
-                                            handleCreateTask(
-                                                time,
-                                                dayjs(day).format('DD/MM/YYYY')
-                                            );
+                                            handleCreateTask(time, day);
                                         }}
                                     />
                                 );
                             });
                         })}
 
-                        <WeekTaskComponent
+                        {/* <WeekTaskComponent
                             key={1}
                             text={'Test 2'}
                             startTime={'5:00 AM'}
                             endTime={'8:30 AM'}
                             day={'SUN'}
-                        />
-                        <WeekTaskComponent
-                            key={2}
-                            text={'Test 2'}
-                            startTime={'6:00 PM'}
-                            endTime={'8:30 PM'}
-                            day={'THU'}
-                        />
-                        <WeekTaskComponent
-                            key={3}
-                            text={'Test 2'}
-                            startTime={'6:00 PM'}
-                            endTime={'6:30 PM'}
-                            day={'SAT'}
-                        />
+                        /> */}
+                        {tasks.map((task) => {
+                            return (
+                                <WeekTaskComponent
+                                    key={task.id}
+                                    text={task.title}
+                                    startTime={task.start_time}
+                                    endTime={task.end_time}
+                                    taskId={task.id}
+                                />
+                            );
+                        })}
                     </div>
                     {/* <div className="scheduler-overlay absolute w-full">
                         <div className="bg-black col-start-1 row-start-13 row-span-3 text-white flex items-start justify-center p-2">
