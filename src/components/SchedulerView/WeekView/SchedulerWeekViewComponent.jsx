@@ -107,13 +107,6 @@ const SchedulerWeekViewComponent = ({ show = true }) => {
                             });
                         })}
 
-                        {/* <WeekTaskComponent
-                            key={1}
-                            text={'Test 2'}
-                            startTime={'5:00 AM'}
-                            endTime={'8:30 AM'}
-                            day={'SUN'}
-                        /> */}
                         {tasks.map((task) => {
                             return (
                                 <WeekTaskComponent
@@ -126,14 +119,6 @@ const SchedulerWeekViewComponent = ({ show = true }) => {
                             );
                         })}
                     </div>
-                    {/* <div className="scheduler-overlay absolute w-full">
-                        <div className="bg-black col-start-1 row-start-13 row-span-3 text-white flex items-start justify-center p-2">
-                            Test
-                        </div>
-                        <div className="bg-black col-start-2 row-start-12 row-span-4 text-white flex items-start justify-center p-2">
-                            Test 2
-                        </div>
-                    </div> */}
                 </div>
             </div>
         </div>
