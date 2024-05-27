@@ -14,8 +14,10 @@ const MonthTaskComponent = ({ text, startTime, endTime, taskId }) => {
     const onClick = () => {
         dispatch(
             GlobalSetCreateTaskForm({
+                taskId: taskId,
                 show: true,
                 header: 'Update Task',
+                formType: 'update',
             })
         );
     };
@@ -29,7 +31,7 @@ const MonthTaskComponent = ({ text, startTime, endTime, taskId }) => {
                 }
             }
             text={text}
-            suffix={start + ' - ' + end}
+            textBelow={start + ' - ' + end}
             className={`p-1 text-sm w-full`}
             onClick={onClick}
         />

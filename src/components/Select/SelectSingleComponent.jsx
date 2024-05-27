@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
-import "./styles.css";
-import useSelect from "../../hooks/useSelect";
-import groupClass from "../../utils/ClassNameUtil";
-import { IconExpandMore } from "../../icons";
+import React, { useRef, useState } from 'react';
+import './styles.css';
+import useSelect from '../../hooks/useSelect';
+import groupClass from '../../utils/ClassNameUtil';
+import { IconExpandMore } from '../../icons';
 
 const SelectSingleComponent = ({
     className,
@@ -11,23 +11,25 @@ const SelectSingleComponent = ({
     suffix,
     disabled = false,
     onSelect,
-    defaultValue = "",
-    placeholder = "Choose",
-    renderKey = "label",
-    valueKey = "value",
+    defaultValue = '',
+    placeholder = 'Choose',
+    renderKey = 'label',
+    valueKey = 'value',
     name,
     nullable = false,
     required,
     error,
+    actionOption = null,
+    onAction = false,
     ...props
 }) => {
     const selectRef = useRef();
     const [selected, setSelected] = useState({
         [renderKey]: defaultValue,
-        [valueKey]: "",
+        [valueKey]: '',
     });
     const { expand, setExpand, selectBox, toggleSelect } = useSelect(
-        selectRef.current,
+        selectRef.current
     );
 
     const handleToggleSelect = () => {
@@ -48,14 +50,14 @@ const SelectSingleComponent = ({
     return (
         <div
             ref={selectRef}
-            className={groupClass("select-single", className, {
+            className={groupClass('select-single', className, {
                 disabled: disabled,
             })}
             {...props}
         >
             <div
-                className={groupClass("select-single-toggle", {
-                    "error-field": !!error && selected[valueKey] === "",
+                className={groupClass('select-single-toggle', {
+                    'error-field': !!error && selected[valueKey] === '',
                 })}
                 onClick={handleToggleSelect}
             >
@@ -63,11 +65,11 @@ const SelectSingleComponent = ({
                     <div className="select-single-prefix">{prefix}</div>
                 ) : null}
                 <span
-                    className={groupClass("select-single-label flex-1", {
-                        "leading-loose": disabled,
+                    className={groupClass('select-single-label flex-1', {
+                        'leading-loose': disabled,
                     })}
                 >
-                    {selected[renderKey] === ""
+                    {selected[renderKey] === ''
                         ? placeholder
                         : selected[renderKey]}
                 </span>
@@ -78,33 +80,33 @@ const SelectSingleComponent = ({
                         <IconExpandMore
                             fill="rgba(255, 255, 255, 0.60)"
                             className={groupClass(
-                                "select-single-suffix-icon h-5 w-5",
+                                'select-single-suffix-icon h-5 w-5',
                                 {
-                                    "-rotate-180": expand,
-                                },
+                                    '-rotate-180': expand,
+                                }
                             )}
                         />
                     )}
                 </div>
             </div>
             <p
-                className={groupClass("mt-1 w-full italic text-red-500", {
-                    hidden: !error || selected[valueKey] !== "",
+                className={groupClass('mt-1 w-full italic text-red-500', {
+                    hidden: !error || selected[valueKey] !== '',
                 })}
             >
                 {error}
             </p>
             <ul
                 className={groupClass(
-                    "select-single-list",
-                    "transition-[transform,opacity,visibility] duration-150 ease-linear",
+                    'select-single-list',
+                    'transition-[transform,opacity,visibility] duration-150 ease-linear',
                     {
-                        "scale-y-0 opacity-0 ": !expand,
-                        "visible scale-y-100 opacity-100": expand,
-                        "origin-top translate-y-0.5": selectBox.bottom === null,
-                        "origin-bottom -translate-y-0.5":
+                        'scale-y-0 opacity-0 ': !expand,
+                        'visible scale-y-100 opacity-100': expand,
+                        'origin-top translate-y-0.5': selectBox.bottom === null,
+                        'origin-bottom -translate-y-0.5':
                             selectBox.top === null,
-                    },
+                    }
                 )}
                 style={{
                     top: selectBox.top,
@@ -114,22 +116,30 @@ const SelectSingleComponent = ({
                     width: selectBox.width,
                 }}
             >
+                {actionOption ? (
+                    <li
+                        className="rounded px-[0.5em] py-[0.5em] hover:bg-[#767680]/50"
+                        onClick={onAction}
+                    >
+                        {actionOption}
+                    </li>
+                ) : null}
                 {options.length > 0 ? (
-                    [{ [renderKey]: "None", [valueKey]: null }]
+                    [{ [renderKey]: 'None', [valueKey]: null }]
                         .concat(options)
                         .filter((option) =>
-                            !nullable ? option[valueKey] !== null : true,
+                            !nullable ? option[valueKey] !== null : true
                         )
                         .map((option) => (
                             <li
                                 key={`${option[valueKey]}-${option[renderKey]}`}
                                 className={groupClass(
-                                    "rounded px-[0.5em] py-[0.5em] hover:bg-[#767680]/50",
+                                    'rounded px-[0.5em] py-[0.5em] hover:bg-[#767680]/50',
                                     {
-                                        "bg-highlight text-white":
+                                        'bg-highlight text-white':
                                             selected[renderKey] ===
                                             option[renderKey],
-                                    },
+                                    }
                                 )}
                                 onClick={() => handleSelect(option)}
                             >
@@ -147,11 +157,11 @@ const SelectSingleComponent = ({
                 name={name}
                 value={(() => {
                     const defaultSelect = options.find(
-                        (option) => option[renderKey] === selected[renderKey],
+                        (option) => option[renderKey] === selected[renderKey]
                     );
                     return defaultSelect
                         ? defaultSelect[valueKey]
-                        : selected[valueKey] ?? "";
+                        : selected[valueKey] ?? '';
                 })()}
                 required={required}
             />

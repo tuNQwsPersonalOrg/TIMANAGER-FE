@@ -56,6 +56,7 @@ const INIT_STATE = {
         endTime: null,
         date: dayjs(new Date()).format('DD/MM/YYYY'),
         formType: 'add',
+        formObject: 'task',
     },
 };
 

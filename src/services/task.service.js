@@ -49,12 +49,19 @@ export default class TaskService {
         });
     }
 
-    static async updateTask(task_id) {
-        try {
-        } catch (error) {
-            console.log(error);
-            return false;
-        }
+    static async getTaskDetail(task_id) {
+        return serviceHandle({
+            method: 'get',
+            endpoint: `/task/get-task/${task_id}`,
+        });
+    }
+
+    static async updateTask(task_id, payload) {
+        return serviceHandle({
+            method: 'post',
+            endpoint: `/task/update/${task_id}`,
+            payload,
+        });
     }
 
     static async getTaskList(queryObject) {

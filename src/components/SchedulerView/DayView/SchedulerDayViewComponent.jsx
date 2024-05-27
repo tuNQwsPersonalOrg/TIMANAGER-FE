@@ -8,11 +8,15 @@ import { GlobalSetCreateTaskForm } from '../../../contexts/Global/GlobalAction';
 import { taskList } from '../../../data/tasks';
 import DayTaskComponent from './_component/DayTaskComponent';
 import TaskService from '../../../services/task.service';
+import TargetService from '../../../services/target.service';
+import DeadlineComponent from '../Deadline/DeadlineComponent';
 
 const SchedulerDayViewComponent = ({ show = true }) => {
     const { selectedDate, createTaskForm, dispatch } =
         useContext(GlobalContext);
     const [tasks, setTasks] = useState([]);
+    const [deadlines, setDeadlines] = useState([]);
+    const today = dayjs();
 
     const handleCreateTask = (time) => {
         dispatch(
@@ -37,9 +41,22 @@ const SchedulerDayViewComponent = ({ show = true }) => {
                     setTasks(result.tasks);
                 }
             };
+            const getAllDeadlines = async () => {
+                const result = await TargetService.getAllDeadlines();
+                if (result) {
+                    setDeadlines(result.deadlines);
+                }
+            };
             getTaskList();
+            getAllDeadlines();
         }
     }, [createTaskForm.show, selectedDate]);
+
+    // useEffect(() => {
+    //     if (dayjs() === dayjs(selectedDate)) {
+    //         console.log();
+    //     }
+    // }, [dayjs(), selectedDate]);
 
     if (!show) return null;
     return (
@@ -92,25 +109,8 @@ const SchedulerDayViewComponent = ({ show = true }) => {
                             />
                         );
                     })}
-                    {/* <DayTaskComponent
-                        key={1}
-                        text={'Test'}
-                        startTime={'12:00 AM'}
-                        endTime={'1:30 AM'}
-                    />
-                    <DayTaskComponent
-                        key={2}
-                        text={'Test 2'}
-                        startTime={'5:00 AM'}
-                        endTime={'5:30 AM'}
-                    />
-                    <DayTaskComponent
-                        key={3}
-                        text={'Sleep'}
-                        startTime={'12:00 PM'}
-                        endTime={'1:30 PM'}
-                    /> */}
                 </div>
+                {/* <DeadlineComponent title="title" deadline="01-02-03" /> */}
             </div>
         </div>
     );

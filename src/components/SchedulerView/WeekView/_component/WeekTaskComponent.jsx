@@ -41,7 +41,7 @@ const WeekTaskComponent = ({ text, startTime, endTime, taskId }) => {
                 left: 9.55 * (dayIndex - 1) + 'rem',
             }}
             text={text}
-            suffix={start + ' - ' + end}
+            textBelow={start + ' - ' + end}
             className={`w-[9.5rem] z-20 absolute overflow-auto`}
             onClick={onClick}
         />

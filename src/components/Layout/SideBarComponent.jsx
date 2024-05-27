@@ -9,6 +9,7 @@ import {
     GlobalSetSelectedDate,
     GlobalSetTimespan,
 } from '../../contexts/Global/GlobalAction';
+import { NavLink } from 'react-router-dom';
 
 const SideBarComponent = () => {
     // const [selectedDay, setSelectedDay] = useState(new Date());
@@ -36,10 +37,6 @@ const SideBarComponent = () => {
                             id: 'month',
                             name: 'Month',
                         },
-                        {
-                            id: 'year',
-                            name: 'Year',
-                        },
                     ]}
                     renderKey="name"
                     defaultValue="Day"
@@ -58,6 +55,11 @@ const SideBarComponent = () => {
                 }
                 // view={['month', 'year']}
             />
+
+            <div className="flex w-full justify-center gap-5">
+                <NavLink to={'/home'}>Task</NavLink>
+                <NavLink to={'/target'}>Target</NavLink>
+            </div>
         </div>
     );
 };

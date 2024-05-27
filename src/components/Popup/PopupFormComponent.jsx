@@ -11,21 +11,30 @@ import { useNavigate } from 'react-router-dom';
 import TextboxComponent from '../Textbox/TextboxComponent';
 import SelectSingleComponent from '../Select/SelectSingleComponent';
 import TaskService from '../../services/task.service';
-import { formatDate, formatTime } from '../../utils/DateTimeUtil';
+import { convertTime, formatDate, formatTime } from '../../utils/DateTimeUtil';
 import TargetService from '../../services/target.service';
 import dayjs from 'dayjs';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 const PopupFormComponent = () => {
     const { selectedDate, createTaskForm, dispatch } =
         useContext(GlobalContext);
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState(createTaskForm?.title);
     const [startTime, setStartTime] = useState(
         formatTime(createTaskForm.startTime)
     );
     const [endTime, setEndTime] = useState(formatTime(createTaskForm.endTime));
-    const [targetId, setTargetId] = useState(null);
-    const navigate = useNavigate();
+    const [target, setTarget] = useState({
+        id: null,
+        title: 'None',
+    });
     const [targetList, setTargetList] = useState([]);
+    const [deadline, setDeadline] = useState(dayjs());
+    const [progress, setProgress] = useState(0);
+    const [targetTitle, setTargetTitle] = useState('');
+    const [fetchTime, setFetchTime] = useState(new Date());
+    const [isLoading, setIsLoading] = useState(false);
+    const [date, setDate] = useState(createTaskForm.date);
 
     const handleCancel = () => {
         dispatch(GlobalSetCreateTaskForm({ show: false }));
@@ -33,10 +42,22 @@ const PopupFormComponent = () => {
     };
 
     const handleDelete = async () => {
-        const result = await TaskService.deleteTask(createTaskForm.taskId);
-        console.log(result);
-        if (result) {
-            alert('Delete task successfully');
+        if (createTaskForm.formObject !== 'target') {
+            const result = await TaskService.deleteTask(
+                createTaskForm.taskId ?? null
+            );
+            console.log(result);
+            if (result) {
+                alert('Delete task successfully');
+            }
+        } else {
+            const result = await TargetService.deleteTarget(
+                createTaskForm.targetId ?? null
+            );
+            console.log(result);
+            if (result) {
+                alert('Delete target successfully');
+            }
         }
         handleCancel();
     };
@@ -45,24 +66,62 @@ const PopupFormComponent = () => {
         e.preventDefault();
 
         if (createTaskForm.formType === 'add' || !createTaskForm.formType) {
-            const result = await TaskService.createTask({
-                title: title,
-                date: formatDate(createTaskForm.date),
-                start_time: startTime,
-                end_time: endTime,
-                notes: null,
-                target_id: targetId,
-            });
-            console.log(result);
-            if (result) {
-                alert('Create task successfully');
+            if (createTaskForm.formObject !== 'target') {
+                const result = await TaskService.createTask({
+                    title: title,
+                    date: formatDate(date),
+                    start_time: startTime,
+                    end_time: endTime,
+                    notes: null,
+                    target_id: target.id,
+                });
+                console.log(result);
+                if (result) {
+                    alert('Create task successfully');
+                }
+            } else {
+                const result = await TargetService.createTarget({
+                    title: targetTitle,
+                    deadline: deadline.format('YYYY-MM-DD HH:mm:ss'),
+                    notes: null,
+                });
+                console.log(result);
+                if (result) {
+                    alert('Create target successfully');
+                }
             }
         } else if (createTaskForm.formType === 'update') {
-            // const result = await TaskService.deleteTask(createTaskForm.taskId);
-            // console.log(result);
-            // if (result) {
-            //     alert('Create task successfully');
-            // }
+            if (createTaskForm.formObject !== 'target') {
+                const result = await TaskService.updateTask(
+                    createTaskForm.taskId,
+                    {
+                        title: title,
+                        date: formatDate(date),
+                        start_time: formatTime(convertTime(startTime)),
+                        end_time: formatTime(convertTime(endTime)),
+                        notes: null,
+                        target_id: target.id,
+                    }
+                );
+
+                if (result) {
+                    alert('Update task successfully');
+                }
+            } else {
+                const result = await TargetService.updateTarget(
+                    createTaskForm.targetId,
+                    {
+                        title: targetTitle,
+                        deadline: deadline.format('YYYY-MM-DD HH:mm:ss'),
+                        progress: progress,
+                        notes: null,
+                    }
+                );
+
+                if (result) {
+                    alert('Update target successfully');
+                }
+            }
         }
         // createTaskForm.onSave();
         handleCancel();
@@ -75,7 +134,46 @@ const PopupFormComponent = () => {
                 setTargetList(result.targets);
             }
         };
-        getAllTargets();
+        const getTaskDetail = async (task_id) => {
+            setIsLoading(true);
+            const result = await TaskService.getTaskDetail(task_id);
+            console.log('task detail', result.task.title);
+            if (result) {
+                setTitle(result.task.title);
+                setStartTime(result.task.start_time);
+                setEndTime(result.task.end_time);
+                setTarget({
+                    id: result.task.target.id ?? null,
+                    title: result.task.target.title ?? 'None',
+                });
+                setDate(result.task.start_time);
+            }
+            setIsLoading(false);
+        };
+
+        const getTargetDetail = async (target_id) => {
+            setIsLoading(true);
+            const result = await TargetService.getTargetDetail(target_id);
+            if (result) {
+                setProgress(result.target.progress);
+                setTargetTitle(result.target.title);
+                setDeadline(dayjs(result.target.deadline));
+            }
+            setIsLoading(false);
+        };
+
+        try {
+            setIsLoading(true);
+            getAllTargets();
+            if (createTaskForm.taskId) getTaskDetail(createTaskForm.taskId);
+            if (createTaskForm.targetId)
+                getTargetDetail(createTaskForm.targetId);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+            setFetchTime(new Date());
+        }
     }, []);
 
     // if (!popup.show || popup.target !== popupTarget.createPodcastForm)
@@ -109,69 +207,133 @@ const PopupFormComponent = () => {
                         <span className="">Title</span>
                         <TextboxComponent
                             className="w-[85%]"
-                            // key={new Date()}
-                            value={title}
+                            key={fetchTime}
+                            value={
+                                createTaskForm.formObject === 'target'
+                                    ? targetTitle
+                                    : title
+                            }
                             // required
-                            onChange={setTitle}
+                            onChange={
+                                createTaskForm.formObject === 'target'
+                                    ? setTargetTitle
+                                    : setTitle
+                            }
                             placeholder="Title..."
+                            reset
                         />
                     </div>
-                    <div className="flex items-center justify-between gap-8 w-full">
-                        <span className="">Date</span>
-                        <TextboxComponent
-                            className="w-[85%]"
-                            // key={new Date()}
-                            value={dayjs(createTaskForm.date).format(
-                                'DD/MM/YYYY'
-                            )}
-                            disabled
-                            // required
-                            // onChange={setTitle}
-                            // placeholder="Title..."
-                        />
-                    </div>
-                    <div className="flex items-center justify-between gap-8 w-full">
-                        <span className="">Target</span>
-                        <SelectSingleComponent
-                            // key={clearTime}
-                            className="w-[85%]"
-                            options={targetList ?? []}
-                            renderKey="title"
-                            valueKey="id"
-                            placeholder="Target"
-                            onSelect={(option) => {
-                                setTargetId(option.id);
-                            }}
-                            nullable
-                        />
-                    </div>
-                    <div className="grid grid-cols-3 gap-10">
-                        <SelectSingleComponent
-                            // key={clearTime}
-                            className="w-full"
-                            options={timeListOption}
-                            renderKey="display"
-                            valueKey="id"
-                            placeholder="Start Time"
-                            defaultValue={createTaskForm.startTime}
-                            onSelect={(option) =>
-                                setStartTime(formatTime(option.display))
-                            }
-                            nullable
-                        />
-                        <SelectSingleComponent
-                            // key={clearTime}
-                            className="w-full"
-                            options={timeListOption}
-                            renderKey="display"
-                            valueKey="id"
-                            placeholder="End Time"
-                            onSelect={(option) =>
-                                setEndTime(formatTime(option.display))
-                            }
-                            nullable
-                        />
-                    </div>
+                    {createTaskForm.formObject !== 'target' ? (
+                        <>
+                            <div className="flex items-center justify-between gap-8 w-full">
+                                <span className="">Date</span>
+                                <TextboxComponent
+                                    className="w-[85%]"
+                                    key={fetchTime}
+                                    value={dayjs(date).format('DD/MM/YYYY')}
+                                    disabled
+                                    reset
+                                    // required
+                                    // onChange={setTitle}
+                                    placeholder="Date"
+                                />
+                            </div>
+                            <div className="flex items-center justify-between gap-8 w-full">
+                                <span className="">Target</span>
+                                <SelectSingleComponent
+                                    key={fetchTime}
+                                    className="w-[85%]"
+                                    defaultValue={target.title}
+                                    options={targetList ?? []}
+                                    renderKey="title"
+                                    valueKey="id"
+                                    placeholder="Target"
+                                    onSelect={(option) => {
+                                        setTarget({
+                                            title: option.title,
+                                            id: option.id,
+                                        });
+                                        setTitle(option.title);
+                                    }}
+                                    nullable
+                                    actionOption="Add new target..."
+                                    onAction={() => {
+                                        dispatch(
+                                            GlobalSetCreateTaskForm({
+                                                show: true,
+                                                header: 'Add target',
+                                                formObject: 'target',
+                                            })
+                                        );
+                                    }}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-10">
+                                {/* {startTime ? (
+                                    <> */}
+                                <SelectSingleComponent
+                                    key={startTime}
+                                    className="w-full"
+                                    options={timeListOption}
+                                    renderKey="display"
+                                    valueKey="id"
+                                    placeholder="Start Time"
+                                    defaultValue={convertTime(startTime)}
+                                    onSelect={(option) =>
+                                        setStartTime(formatTime(option.display))
+                                    }
+                                />
+                                <SelectSingleComponent
+                                    key={endTime + 'e'}
+                                    className="w-full"
+                                    options={timeListOption}
+                                    renderKey="display"
+                                    valueKey="id"
+                                    placeholder="End Time"
+                                    defaultValue={convertTime(endTime)}
+                                    onSelect={(option) =>
+                                        setEndTime(formatTime(option.display))
+                                    }
+                                    nullable
+                                />
+                                {/* </>
+                                ) : null} */}
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="flex items-center justify-between gap-8 w-full">
+                                <span className="">Deadline</span>
+                                <DateTimePicker
+                                    className="w-[85%]"
+                                    value={deadline}
+                                    onChange={(newValue) => {
+                                        setDeadline(newValue);
+                                        console.log(
+                                            newValue.format(
+                                                'YYYY-MM-DD HH:mm:ss'
+                                            )
+                                        );
+                                    }}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between gap-8 w-full">
+                                <span className="">Progress</span>
+                                <TextboxComponent
+                                    key={fetchTime}
+                                    inputType="number"
+                                    className="w-[85%]"
+                                    value={progress}
+                                    // required
+                                    onChange={setProgress}
+                                    reset
+                                    max={100}
+                                    min={0}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 <div className="popup-footer">
@@ -180,6 +342,7 @@ const PopupFormComponent = () => {
                         <button
                             type="submit"
                             className="flex justify-center items-center bg-[#3A6DEE] px-8 py-[0.75rem] rounded-md"
+                            disabled={isLoading}
                         >
                             <span className="text-white">Save</span>
                         </button>

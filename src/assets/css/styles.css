@@ -74,6 +74,11 @@ input[type='checkbox'] {
     accent-color: #358cd4;
 }
 
+button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
 @layer components {
     .page {
         @apply h-[100vh] w-[100vw];

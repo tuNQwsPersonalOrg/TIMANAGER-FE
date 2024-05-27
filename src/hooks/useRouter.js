@@ -6,6 +6,7 @@ import { PathList } from '../constants';
 import HomePage from '../pages/Home/HomePage';
 import NotFoundPage from '../pages/NotFound/NotFoundPage';
 import LoginPage from '../pages/Login/LoginPage';
+import TargetPage from '../pages/Target/TargetPage';
 
 const useRouter = () => {
     const { user } = useContext(AuthContext);
@@ -25,6 +26,10 @@ const useRouter = () => {
                 {
                     path: PathList.homePage,
                     element: <HomePage />,
+                },
+                {
+                    path: '/target',
+                    element: <TargetPage />,
                 },
             ],
         },
